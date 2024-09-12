@@ -1,7 +1,6 @@
 let userScore = 0;
 let compScore = 0;
 
-
 const choices = document.querySelectorAll(".choice");
 const msg = document.querySelector("#msg");
 
@@ -15,47 +14,44 @@ const genCompChoice = () => {
 };
 
 const drawGame = () => {
-    msg.innerText = "Game was Draw. Play again.";
+    msg.innerText = "It's a Draw. Play again.";
     msg.style.backgroundColor = "#081b31";
 };
 
-const showWinner = (userWin, userChoice, compChoice)  => {
-    if(userWin) {
+const showWinner = (userWin, userChoice, compChoice) => {
+    if (userWin) {
         userScore++;
         userScorePara.innerText = userScore;
-        msg.innerText = 'You win! Your $(userChoice) beats $(compChoice)';
+        msg.innerText = `You win! Your ${userChoice} beats ${compChoice}`;
         msg.style.backgroundColor = "green";
-    }
-    else{
+    } else {
         compScore++;
         compScorePara.innerText = compScore;
-        msg.innerText = 'You lose. $(compChoice) beats your $(userChoice)';
+        msg.innerText = `You lose. ${compChoice} beats your ${userChoice}`;
         msg.style.backgroundColor = "red";
     }
 };
 
 const playGame = (userChoice) => {
     const compChoice = genCompChoice();
+
     if (userChoice === compChoice) {
         drawGame();
+    } else {
+        let userWin = false;
+
+        // Updated logic for winning conditions
+        if (
+            (userChoice === "rock" && compChoice === "scissors") ||
+            (userChoice === "scissors" && compChoice === "paper") ||
+            (userChoice === "paper" && compChoice === "rock")
+        ) {
+            userWin = true;
+        }
+
+        showWinner(userWin, userChoice, compChoice);
     }
-
-    else {
-        let userWin = true;
-        if (userChoice === "rock") {
-            userWin = compChoice === "paper" ? false : true;
-        }
-        else if (userChoice === "scissors") {
-            userWin = compChoice === "rock" ? false : true;
-        }
-        else {
-            userWin = compChoice === "scissors" ? false : true;
-        }
-        showWinner(userWin,userChoice,compChoice);
-    }
-}
-
-
+};
 
 choices.forEach((choice) => {
     choice.addEventListener("click", () => {
